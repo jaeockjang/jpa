@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,26 @@ public class TestController {
         book.setBookstoreId(bookStoreNew.getId());
 
         bookRepository.saveAndFlush(book);
+
+        return true;
+
+    }
+
+    @GetMapping("/t00-1")
+    public boolean test000(){
+        BookStore bookStore = new BookStore();
+        bookStore.setName("책방");
+        BookStore bookStoreNew= bookStoreRepository.saveAndFlush(bookStore);
+
+        List<Book> books = new ArrayList<>();
+        for(int i=0; i<10; i++) {
+            Book book = new Book();
+            book.setTitle("JPA"+ i);
+            book.setIsbn("isbn-00"+i);
+            book.setBookstoreId(bookStoreNew.getId());
+            books.add(book);
+        }
+        bookRepository.saveAll(books);
 
         return true;
 
