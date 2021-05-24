@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: testPostgres
+
+  datasource:
+    name: postgresql
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: test
+    password: test
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-test-query: SELECT 1
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
+        format_sql: true
+
