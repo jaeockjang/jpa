@@ -26,3 +26,5 @@ spring:
         jdbc.lob.non_contextual_creation: true
         format_sql: true
 
+# ERROR --> No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor and no properties discovered to create BeanSerializer
+#  jackson.serialization.fail-on-empty-beans: false

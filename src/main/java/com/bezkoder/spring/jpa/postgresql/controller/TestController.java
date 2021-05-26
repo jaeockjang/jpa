@@ -1,17 +1,18 @@
 package com.bezkoder.spring.jpa.postgresql.controller;
 
-import com.bezkoder.spring.jpa.postgresql.model.Book;
-import com.bezkoder.spring.jpa.postgresql.model.BookStore;
-import com.bezkoder.spring.jpa.postgresql.repository.BookRepository;
-import com.bezkoder.spring.jpa.postgresql.repository.BookStoreRepository;
+import com.bezkoder.spring.jpa.postgresql.dto.BookstoreDTO;
+import com.bezkoder.spring.jpa.postgresql.dto.GwPage;
+import com.bezkoder.spring.jpa.postgresql.dto.PageParam;
+import com.bezkoder.spring.jpa.postgresql.model.*;
+import com.bezkoder.spring.jpa.postgresql.repository.*;
+import com.bezkoder.spring.jpa.postgresql.service.TestService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,31 @@ public class TestController {
     private BookStoreRepository bookStoreRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private LackRepository lackRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private EmailRepository emailRepository;
+
+
+
+
+    @Autowired
+    private TestService testService;
+
+
+//    @GetMapping("/s00")
+//    public Mono<GwPage<BookstoreDTO>> service00(PageParam pageParam){
+//
+//
+//    }
+
+
+
+
 
     @GetMapping("/t00")
     public boolean test00(){
@@ -47,6 +73,78 @@ public class TestController {
         book.setBookstoreId(bookStoreNew.getId());
 
         bookRepository.saveAndFlush(book);
+
+        return true;
+
+    }
+
+    @GetMapping("/t20")
+    public boolean test20(){
+        BookStore bookStore = new BookStore();
+        bookStore.setName("책방");
+        BookStore bookStoreNew= bookStoreRepository.saveAndFlush(bookStore);
+
+        Lack lack = new Lack();
+        lack.setLackPos("좌20:높이30");
+        Lack lackNew= lackRepository.saveAndFlush(lack);
+
+
+        Book book = new Book();
+        book.setTitle("JPA");
+        book.setIsbn("isbn-00");
+        book.setBookstoreId(bookStoreNew.getId());
+        book.setLackId(lackNew.getId());
+        bookRepository.saveAndFlush(book);
+
+        return true;
+
+    }
+
+    @GetMapping("/t30")
+    public Email test30(){
+
+        Employee employee= new Employee();
+        Employee employeeNew= employeeRepository.saveAndFlush(employee);
+
+        Email email= new Email();
+        email.setEmployee(employeeNew);
+        Email emailNew= emailRepository.save(email);
+
+
+        return emailNew;
+
+    }
+
+    @GetMapping("/t30-1")
+    public List<Employee> test30_1(){
+        return employeeRepository.findAll();
+    }
+
+    @GetMapping("/t30-2")
+    public List<Email> test30_2(){
+        return emailRepository.findAll();
+    }
+
+    @GetMapping("/t30-3")
+    public Optional<Email> test30_3(){
+        return emailRepository.findById(146L);
+    }
+
+    @GetMapping("/t31")
+    public boolean test31(){
+        List<Email> emails=new ArrayList<>();
+
+        for(int i=0; i<10; i++) {
+            Email email = new Email();
+
+            emails.add(email);
+        }
+        List<Email> emailsNew= emailRepository.saveAll(emails);
+        emailsNew.forEach(System.out::println);
+
+        Employee employee= new Employee();
+        employee.setEmails(emailsNew);
+        Employee employeeNew= employeeRepository.saveAndFlush(employee);
 
         return true;
 

@@ -31,6 +31,15 @@ public class Book {
     @ManyToOne
     @JoinColumn(name="BOOKSTORE_ID", referencedColumnName="BOOKSTORE_ID", insertable = false, updatable = false)
     private BookStore bookStore;
+
+
+    @Column(name = "LACK_ID")
+    private Long lackId;
+
+    @ManyToOne
+    @JoinColumn(name="LACK_ID", referencedColumnName="LACK_ID", insertable = false, updatable = false)
+    private Lack lack;
+
 }
 
 
