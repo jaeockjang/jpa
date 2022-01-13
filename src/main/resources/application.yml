@@ -1,9 +1,20 @@
+spring:
+   profiles:
+     group:
+       "default": "default,common"
+       "docker": "docker,common"
+       "local": "default,common"
+       "dev":  "dev,common"
+       "prod": "prod,common"
+
 server:
   port: 8080
 
 ---
 spring:
-  profiles: default
+  config:
+    activate:
+      on-profile: "default"
 
   application:
     name: testPostgres
@@ -12,10 +23,10 @@ spring:
     name: postgresql
     url: jdbc:postgresql://localhost:5432/postgres
     driver-class-name: org.postgresql.Driver
-    username: test
-    password: test
+    username: ${DATASORUCE_USERNAME:test}
+    password: ${DATASORUCE_PASSWORD:test}
     hikari:
-      maximum-pool-size: 10
+      maximum-pool-size: 100
       minimum-idle: 5
       connection-test-query: SELECT 1
 
@@ -31,18 +42,20 @@ spring:
 
 ---
 spring:
-  profiles: docker
+  config:
+    activate:
+      on-profile: "docker"
 
   application:
     name: testPostgres
 
   datasource:
     name: postgresql
-#    url: jdbc:postgresql://192.168.66.233:5432/postgres
-    url: jdbc:postgresql://my-postgresql.default.svc.cluster.local:5432/postgres
+    url: jdbc:postgresql://192.168.101.80:5432/postgres
+#    url: jdbc:postgresql://my-release-postgresql.default.svc.cluster.local:5432/postgres
     driver-class-name: org.postgresql.Driver
-    username: test
-    password: test
+    username: ${DATASORUCE_USERNAME:test1}
+    password: ${DATASORUCE_PASSWORD:test1}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
@@ -57,3 +70,10 @@ spring:
       hibernate:
         jdbc.lob.non_contextual_creation: true
         format_sql: true
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: "common"

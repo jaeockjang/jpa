@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    public <Optional> Book findByTitle(String title);
+    public List<Book> findByTitle(String title);
 
     @Transactional
     public void deleteAllByTitle(String title);
